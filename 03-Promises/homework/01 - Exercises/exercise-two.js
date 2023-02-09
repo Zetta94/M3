@@ -1,5 +1,6 @@
 "use strict";
 
+const { magenta } = require("./utils");
 let exerciseUtils = require("./utils");
 
 let args = process.argv.slice(2).map(function (st) {
@@ -20,15 +21,19 @@ args.forEach(function (arg) {
 
 function problemA() {
   // callback version
-  exerciseUtils.readFile("poem-two/stanza-01.txt", function (err, stanza) {
-    exerciseUtils.blue(stanza);
-  });
-  exerciseUtils.readFile("poem-two/stanza-02.txt", function (err, stanza) {
-    exerciseUtils.blue(stanza);
-  });
+  // exerciseUtils.readFile("poem-two/stanza-01.txt", function (err, stanza) {
+  //   exerciseUtils.blue(stanza);
+  // });
+  // exerciseUtils.readFile("poem-two/stanza-02.txt", function (err, stanza) {
+  //   exerciseUtils.blue(stanza);
+  // });
 
   // promise version
   // Tu código acá:
+  exerciseUtils.promisifiedReadFile("poem-two/stanza-01.txt")
+  .then(stanza1=>exerciseUtils.blue(stanza1))
+  exerciseUtils.promisifiedReadFile("poem-two/stanza-02.txt")
+  .then(stanza2=>exerciseUtils.blue(stanza2))
 }
 
 function problemB() {
@@ -37,14 +42,24 @@ function problemB() {
   });
 
   // callback version
-  filenames.forEach((filename) => {
-    exerciseUtils.readFile(filename, function (err, stanza) {
-      exerciseUtils.blue(stanza);
-    });
-  });
+  // filenames.forEach((filename) => {
+  //   exerciseUtils.readFile(filename, function (err, stanza) {
+  //     exerciseUtils.blue(stanza);
+  //   });
+  // });
 
   // promise version
   // Tu código acá:
+  // ? let promises = filenames.map(f=>exerciseUtils.promisifiedReadFile(f))
+  // ? Promise.all(promises)
+  // ? .then(stanza=>exerciseUtils.blue(stanza))
+
+  filenames.forEach(f => {
+    exerciseUtils.promisifiedReadFile(f)
+    .then(stanza=>exerciseUtils.blue(stanza))
+    .catch(error=>exerciseUtils.magenta(new Error(error)))
+  })
+
 }
 
 function problemC() {
@@ -64,6 +79,12 @@ function problemC() {
 
   // promise version
   // Tu código acá:
+  filenames.forEach(f=>{
+    exerciseUtils.promisifiedReadFile(f)
+    .then(stanza=>exerciseUtils.blue(stanza))
+    .catch(error=>exerciseUtils.magenta(new Error(error)))
+  })
+
 }
 
 function problemD() {
